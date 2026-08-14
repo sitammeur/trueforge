@@ -47,7 +47,7 @@ export class AskUserQuestion extends ClientSideTool {
           'question: "<your question>"',
           'options: ["<Option A>", "<Option B>", "<Option A and B — combined details>"]',
           '',
-          'Example (context clearly favors A, e.g. the user stated a preference or the project already uses it):',
+          'Example (context clearly favors A):',
           'question: "<your question>"',
           'options: ["<Option A> (Recommended)", "<Option B>", "<Option C>"]',
           '',
