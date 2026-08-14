@@ -138,7 +138,7 @@ export { PromiseTimeoutError, withTimeout } from './util/promiseUtils';
 
 // Sandbox (concrete implementation; provider details exported for composition)
 export { DaytonaSandboxProvider } from './sandbox/provider/DaytonaProvider';
-export type { DaytonaBuildFailureHandler, DaytonaSandboxProviderOptions } from './sandbox/provider/DaytonaProvider';
+export type { DaytonaSandboxProviderOptions } from './sandbox/provider/DaytonaProvider';
 export type {
   SandboxBuild,
   SandboxBuildMetadata,
