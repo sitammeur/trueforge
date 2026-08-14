@@ -55,6 +55,8 @@ function httpUrlToWsUrl(url: string): string {
   return parsed.toString();
 }
 
+export type DaytonaBuildFailureHandler = (build: SandboxBuild) => Promise<void>;
+
 export interface DaytonaSandboxProviderOptions {
   /** Caller-owned Daytona SDK client (credentials / lifetime). */
   client: Daytona;
@@ -76,6 +78,7 @@ export interface DaytonaSandboxProviderOptions {
   natsBridgePort?: number;
   /** Defaults to 1 hour (same as the gateway's max agent execution time). */
   previewUrlExpirySeconds?: number;
+  onBuildFailure: DaytonaBuildFailureHandler | undefined;
   logger: Logger;
 }
 
@@ -92,6 +95,7 @@ export class DaytonaSandboxProvider implements SandboxProvider {
   private readonly fileMaxBytesForDownload: number;
   private readonly natsBridgePort: number;
   private readonly previewUrlExpirySeconds: number;
+  private readonly onBuildFailure: DaytonaBuildFailureHandler | undefined;
   private readonly logger: Logger;
   private readonly daytona: Daytona;
   private static readonly cachedSandboxes = new Map<string, { sandbox: Sandbox; defaultTimeoutMs: number }>();
@@ -110,6 +114,7 @@ export class DaytonaSandboxProvider implements SandboxProvider {
     this.fileMaxBytesForDownload = options.fileMaxBytesForDownload;
     this.natsBridgePort = options.natsBridgePort ?? DEFAULT_SANDBOX_NATS_WS_PORT;
     this.previewUrlExpirySeconds = options.previewUrlExpirySeconds ?? DEFAULT_PREVIEW_URL_EXPIRY_SECONDS;
+    this.onBuildFailure = options.onBuildFailure;
     this.logger = options.logger.child({ module: 'DaytonaProvider' });
   }
 
@@ -274,13 +279,33 @@ export class DaytonaSandboxProvider implements SandboxProvider {
     // terminal (minutes on a cold image pull), but Daytona registers it on the first request, so
     // progress is observed via getImageBuildStatus. A concurrent-create conflict is harmless.
     void this.daytona.snapshot.create({ name: this.buildRef, image: this.imageUri }).catch((error: unknown) => {
-      this.logger.error(`Daytona snapshot create failed: name=${this.buildRef}`, extractErrorLogFields(error));
+      const fields = extractErrorLogFields(error);
+      this.logger.error(`Daytona snapshot create failed: name=${this.buildRef}`, fields);
+      return this.reportBuildFailure(fields.error);
     });
     return {
       status: 'pending',
       reason: 'Sandbox image build started.',
       metadata: { build_ref: this.buildRef, image_uri: this.imageUri },
     };
+  }
+
+  private async reportBuildFailure(reason: string): Promise<void> {
+    if (!this.onBuildFailure) {
+      return;
+    }
+    try {
+      await this.onBuildFailure({
+        status: 'failed',
+        reason: `Sandbox image build failed: ${reason}`,
+        metadata: { build_ref: this.buildRef, image_uri: this.imageUri },
+      });
+    } catch (error) {
+      this.logger.error(
+        `Reporting the Daytona snapshot create failure failed: name=${this.buildRef}`,
+        extractErrorLogFields(error),
+      );
+    }
   }
 
   async getImageBuildStatus(): Promise<SandboxBuild> {
