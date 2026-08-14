@@ -37,7 +37,7 @@ jobs:
       github.actor != 'github-actions[bot]' &&
       github.actor != 'trueforge-dev-bot[bot]'
     permissions:
-      contents: write
+      contents: read
 
     steps:
       - name: Create GitHub App token
@@ -109,7 +109,7 @@ jobs:
         if: steps.decide.outputs.needed == 'true'
         run: pnpm sdk:generate
 
-      # Forks get a read-only token, so only the commit is skipped. TODO: an approval flow that can push to the fork.
+      # Same-repo only: App token can push. Forks have no secrets / cannot write the fork head.
       - name: Commit generated output
         if: steps.decide.outputs.needed == 'true' && steps.app-token.outcome == 'success'
         # Passed as env, never interpolated into the script, so it cannot inject shell.
@@ -141,7 +141,44 @@ jobs:
           git commit -m "Regenerate OpenAPI document and TypeScript SDK"
           git push origin "HEAD:refs/heads/$BRANCH"
 
-      - name: Report skipped commit on fork
+      # Forks cannot receive the App push (no secrets; App is not installed on the fork).
+      # Contributors must commit generated output themselves, including a sdk changeset when
+      # packages/sdk changed — otherwise the client can merge without a release bump.
+      - name: Fail if generated output is missing on fork
         if: steps.decide.outputs.needed == 'true' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          # Checkout is the fork tip; PR base often is not in that clone until fetched from upstream.
+          UPSTREAM: ${{ github.server_url }}/${{ github.repository }}
         run: |
-          echo "::notice::Generation succeeded. The commit was skipped because pull requests from forks cannot push; a maintainer will regenerate after merge."
+          set -euo pipefail
+
+          # 1) Generated-output gate: after CI ran sdk:generate, the tree must match what
+          #    a same-repo commit would have pushed (OpenAPI copies, packages/sdk, lockfile).
+          #    Porcelain dirty here means the fork head is stale — contributor must run
+          #    pnpm sdk:generate, commit those paths, and push (we cannot push to the fork).
+          dirty="$(git status --porcelain -- .github/fern/openapi docs/openapi.json packages/sdk pnpm-lock.yaml)"
+          if [ -n "$dirty" ]; then
+            echo "::error::OpenAPI/SDK out of date. Run pnpm sdk:generate, commit, and push."
+            echo "$dirty"
+            exit 1
+          fi
+
+          # 2) Changeset gate: this PR must already include an sdk release note when it
+          #    changes consumer-facing packages/sdk (exclude .fern metadata).
+          #    Fetch upstream base, take merge-base with HEAD (not base tip — an unsynced
+          #    fork still diffs vs main even when this PR never touched sdk), then:
+          #    no sdk diff → ok; else run changeset:sdk-regen — if that dirties .changeset,
+          #    the PR was missing the file (same check the same-repo commit step relies on).
+          git fetch --no-tags "$UPSTREAM" "+refs/heads/${BASE_REF}:refs/remotes/upstream-base"
+          merge_base="$(git merge-base refs/remotes/upstream-base HEAD)"
+          if git diff --quiet "$merge_base" HEAD -- packages/sdk ':!packages/sdk/.fern'; then
+            exit 0
+          fi
+          pnpm changeset:sdk-regen
+          cs_dirty="$(git status --porcelain -- .changeset)"
+          if [ -n "$cs_dirty" ]; then
+            echo "::error::Missing sdk changeset. Run pnpm changeset:sdk-regen and commit .changeset."
+            echo "$cs_dirty"
+            exit 1
+          fi
