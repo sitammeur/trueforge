@@ -14,12 +14,12 @@
 
 ## The open-source runtime layer that turns an LLM into a working agent
 
-<a href="https://github.com/truefoundry/trueforge/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a>
-<a href="https://nodejs.org"><img src="https://img.shields.io/badge/Node.js-%3E%3D22.13-green.svg" alt="Node.js >= 22.13"></a>
-<a href="https://www.npmjs.com/package/@truefoundry/trueforge"><img src="https://img.shields.io/npm/v/@truefoundry/trueforge?label=npm" alt="npm @truefoundry/trueforge"></a>
-<a href="https://trueforge.dev"><img src="https://img.shields.io/badge/Docs-blue.svg" alt="Documentation"></a>
-<a href="https://trueforge.dev/quickstart"><img src="https://img.shields.io/badge/Quickstart-blue.svg" alt="Quickstart"></a>
-<a href="https://trueforge.dev/api/overview"><img src="https://img.shields.io/badge/SDK-blue.svg" alt="SDK"></a>
+<a href="https://github.com/truefoundry/trueforge/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?logo=opensourceinitiative&logoColor=white" alt="License: MIT"></a>
+<a href="https://nodejs.org"><img src="https://img.shields.io/badge/Node.js-%3E%3D22.13-green?logo=nodedotjs&logoColor=white" alt="Node.js >= 22.13"></a>
+<a href="https://www.npmjs.com/package/@truefoundry/trueforge"><img src="https://img.shields.io/npm/v/@truefoundry/trueforge?logo=npm&logoColor=white&label=npm" alt="npm @truefoundry/trueforge"></a>
+<a href="https://trueforge.dev"><img src="https://img.shields.io/badge/Documentation-blue?logo=gitbook&logoColor=white" alt="Documentation"></a>
+<a href="https://trueforge.dev/quickstart"><img src="https://img.shields.io/badge/Quickstart-blue?logo=readme&logoColor=white" alt="Quickstart"></a>
+<a href="https://trueforge.dev/api/overview"><img src="https://img.shields.io/badge/SDK-blue?logo=typescript&logoColor=white" alt="SDK"></a>
 
 TrueForge runs the agent execution loop (model calls, MCP tools, skills, sandboxing, approvals, context, session state) and exposes it as a chat UI, an HTTP API with a TypeScript SDK, and an embeddable UI SDK.
 
