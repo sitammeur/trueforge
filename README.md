@@ -1,52 +1,35 @@
-<p align="center">
-  <a href="https://trueforge.dev">
-    <picture>
-      <source srcset="./docs/assets/trueforge-black.svg" media="(prefers-color-scheme: light)">
-      <source srcset="./docs/assets/trueforge-white.svg" media="(prefers-color-scheme: dark)">
-      <img src="./docs/assets/trueforge-black.svg" alt="TrueForge logo">
-    </picture>
-  </a>
-</p>
-<p align="center">The open-source agent harness - the runtime layer that turns an LLM into a working agent</p>
+<div align="center">
 
-<p align="center">
-  <a href="https://github.com/truefoundry/trueforge/blob/main/LICENSE">
-    <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT">
-  </a>
-  <a href="https://nodejs.org">
-    <img src="https://img.shields.io/badge/Node.js-%3E%3D22.13-green.svg" alt="Node.js >= 22.13">
-  </a>
-  <a href="https://trueforge.dev">
-    <img src="https://img.shields.io/badge/Documentation-trueforge.dev-blue.svg" alt="Documentation">
-  </a>
-  <a href="https://trueforge.dev/quickstart">
-    <img src="https://img.shields.io/badge/Quickstart-trueforge.dev/quickstart-blue.svg" alt="Quickstart">
-  </a>
-  <a href="https://trueforge.dev/api/overview">
-    <img src="https://img.shields.io/badge/SDK-trueforge.dev/api/overview-blue.svg" alt="SDK">
-  </a>
-</p>
-<p align="center">
-  <a href="https://www.npmjs.com/package/@truefoundry/trueforge">
-    <img src="https://img.shields.io/npm/v/@truefoundry/trueforge?label=trueforge" alt="npm @truefoundry/trueforge">
-  </a>
-  <a href="https://www.npmjs.com/package/@truefoundry/trueforge-sdk">
-    <img src="https://img.shields.io/npm/v/@truefoundry/trueforge-sdk?label=trueforge-sdk" alt="npm @truefoundry/trueforge-sdk">
-  </a>
-  <a href="https://www.npmjs.com/package/@truefoundry/trueforge-ui">
-    <img src="https://img.shields.io/npm/v/@truefoundry/trueforge-ui?label=trueforge-ui" alt="npm @truefoundry/trueforge-ui">
-  </a>
-  <a href="https://www.npmjs.com/package/@truefoundry/trueforge-core">
-    <img src="https://img.shields.io/npm/v/@truefoundry/trueforge-core?label=trueforge-core" alt="npm @truefoundry/trueforge-core">
-  </a>
-  <a href="https://deepwiki.com/truefoundry/trueforge">
-    <img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki">
-  </a>
-</p>
+<a href="https://trueforge.dev" target="_blank">
+  <picture>
+    <source srcset="./docs/assets/trueforge-black.svg" media="(prefers-color-scheme: light)">
+    <source srcset="./docs/assets/trueforge-white.svg" media="(prefers-color-scheme: dark)">
+    <img
+      alt="TrueForge logo"
+      src="./docs/assets/trueforge-black.svg"
+      width="400"
+    >
+  </picture>
+</a>
 
-# TrueForge
+## The open-source runtime layer that turns an LLM into a working agent
 
-TrueForge runs the agent execution loop for you - model calls, MCP tools, skills, sandboxing, approvals, context management, and session state - and exposes it three ways: a **chat UI**, an **HTTP API** with a TypeScript **SDK**, and an embeddable **UI SDK**.
+<a href="https://github.com/truefoundry/trueforge/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a>
+<a href="https://nodejs.org"><img src="https://img.shields.io/badge/Node.js-%3E%3D22.13-green.svg" alt="Node.js >= 22.13"></a>
+<a href="https://www.npmjs.com/package/@truefoundry/trueforge"><img src="https://img.shields.io/npm/v/@truefoundry/trueforge?label=trueforge" alt="npm @truefoundry/trueforge"></a>
+<a href="https://trueforge.dev"><img src="https://img.shields.io/badge/Documentation-trueforge.dev-blue.svg" alt="Documentation"></a>
+<a href="https://trueforge.dev/quickstart"><img src="https://img.shields.io/badge/Quickstart-trueforge.dev/quickstart-blue.svg" alt="Quickstart"></a>
+<a href="https://trueforge.dev/api/overview"><img src="https://img.shields.io/badge/SDK-trueforge.dev/api/overview-blue.svg" alt="SDK"></a>
+
+TrueForge runs the agent execution loop for you (model calls, MCP tools, skills, sandboxing, approvals, context management, and session state) and exposes it three ways: a chat UI, an HTTP API with a TypeScript SDK, and an embeddable UI SDK.
+
+</div>
+
+<br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br>
 
 ![TrueForge Chat UI](./docs/images/hero.png)
 
