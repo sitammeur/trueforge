@@ -23,6 +23,8 @@
 
 TrueForge runs the agent execution loop (model calls, MCP tools, skills, sandboxing, approvals, context, session state) and exposes it as a chat UI, an HTTP API with a TypeScript SDK, and an embeddable UI SDK.
 
+<video src="https://github.com/user-attachments/assets/5d7767f3-c1a9-4c87-9799-f2fdfd460bd6"></video>
+
 </div>
 
 <br><br><br><br><br><br><br><br><br><br>
